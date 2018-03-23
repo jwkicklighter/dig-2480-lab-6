@@ -203,6 +203,9 @@ Player.prototype.moveX = function(step, level, keys) {
   // Find if there's an obstacle there
   var obstacle = level.obstacleAt(newPos, this.size);
 
+  if (obstacle === "lava")
+    this.pos = new Vector(10,10);
+
   // Move if there's not a wall there.
   if(obstacle!="wall")
     this.pos = newPos;
@@ -221,7 +224,9 @@ Player.prototype.moveY = function(step, level, keys) {
   // The floor is also an obstacle -- only allow players to 
   // jump if they are touching some obstacle.
   if (obstacle) {
-    if (keys.up && this.speed.y > 0)
+    if (obstacle === "lava") {
+      this.pos = new Vector(10,10);
+    } else if (keys.up && this.speed.y > 0)
       this.speed.y = -jumpSpeed;
     else
       this.speed.y = 0;
